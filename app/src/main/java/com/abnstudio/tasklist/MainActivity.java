@@ -2,6 +2,7 @@ package com.abnstudio.tasklist;
 
 import android.content.ContentValues;
 import android.content.DialogInterface;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ListAdapter;
+import android.widget.SimpleCursorAdapter;
 
 public class MainActivity extends AppCompatActivity {
     private ListAdapter todoListAdapter;
@@ -61,5 +63,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateTodoList() {
+        todoListSQLHelper = new TodoListSQLHelper(MainActivity.this);
+        SQLiteDatabase sqLiteDatabase = todoListSQLHelper.getReadableDatabase();
+
+        Cursor cursor = sqLiteDatabase.query(TodoListSQLHelper.TABLE_NAME,
+                new String[]{TodoListSQLHelper._ID,TodoListSQLHelper.COL1_TASK},null,null,null,null,null);
+        todoListAdapter = new SimpleCursorAdapter(this, R.layout.todotask, cursor, new String[]{TodoListSQLHelper.COL1_TASK},
+                new int[]{R.id.todoTaskview},0);
     }
 }
