@@ -48,10 +48,18 @@ public class MainActivity extends AppCompatActivity {
 
                         values.put(TodoListSQLHelper.COL1_TASK,toDoTaskInput);
                         sqLiteDatabase.insertWithOnConflict(TodoListSQLHelper.TABLE_NAME,null, values, SQLiteDatabase.CONFLICT_IGNORE);
-
+                        
                         updateTodoList();
                     }
-                })
+                });
+                toDoTaskBuilder.setNegativeButton("Cancel",null);
+                toDoTaskBuilder.create().show();
+                return true;
+                default:
+                    return false;
         }
+    }
+
+    private void updateTodoList() {
     }
 }
