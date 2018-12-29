@@ -1,5 +1,6 @@
 package com.abnstudio.tasklist;
 
+import android.app.ListActivity;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.database.Cursor;
@@ -9,11 +10,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends ListActivity {
     private ListAdapter todoListAdapter;
     private TodoListSQLHelper todoListSQLHelper;
 
@@ -70,5 +73,19 @@ public class MainActivity extends AppCompatActivity {
                 new String[]{TodoListSQLHelper._ID,TodoListSQLHelper.COL1_TASK},null,null,null,null,null);
         todoListAdapter = new SimpleCursorAdapter(this, R.layout.todotask, cursor, new String[]{TodoListSQLHelper.COL1_TASK},
                 new int[]{R.id.todoTaskview},0);
+
+        this.setListAdapter(todoListAdapter);
+    }
+
+    public void onDoneButtonClick(View view){
+        View v = (View) view.getParent();
+        TextView todoTV = v.findViewById(R.id.todoTaskview);
+
+        String taskItem = todoTV.getText().toString();
+
+        String deleteTaskItemSQL = "DELETE FROM " + TodoListSQLHelper.TABLE_NAME + " WHERE " + TodoListSQLHelper.COL1_TASK +
+                " = '" + taskItem + "'";
+
+        
     }
 }
