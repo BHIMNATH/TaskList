@@ -86,6 +86,9 @@ public class MainActivity extends ListActivity {
         String deleteTaskItemSQL = "DELETE FROM " + TodoListSQLHelper.TABLE_NAME + " WHERE " + TodoListSQLHelper.COL1_TASK +
                 " = '" + taskItem + "'";
 
-        
+        todoListSQLHelper = new TodoListSQLHelper(MainActivity.this);
+        SQLiteDatabase sqLiteDatabase = todoListSQLHelper.getWritableDatabase();
+        sqLiteDatabase.execSQL(deleteTaskItemSQL);
+        updateTodoList();
     }
 }
