@@ -1,6 +1,8 @@
 package com.abnstudio.tasklist;
 
+import android.content.ContentValues;
 import android.content.DialogInterface;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -38,7 +40,16 @@ public class MainActivity extends AppCompatActivity {
                 toDoTaskBuilder.setPositiveButton("Add Task", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        
+                        String toDoTaskInput = todoET.getText().toString();
+                        todoListSQLHelper = new TodoListSQLHelper(MainActivity.this);
+                        SQLiteDatabase sqLiteDatabase = todoListSQLHelper.getWritableDatabase();
+                        ContentValues values = new ContentValues();
+                        values.clear();
+
+                        values.put(TodoListSQLHelper.COL1_TASK,toDoTaskInput);
+                        sqLiteDatabase.insertWithOnConflict(TodoListSQLHelper.TABLE_NAME,null, values, SQLiteDatabase.CONFLICT_IGNORE);
+
+                        updateTodoList();
                     }
                 })
         }
